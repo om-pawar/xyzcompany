@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuctionVault | Next-Gen Peer-to-Peer Rare Antiques & Relics Marketplace</title>
+  <meta name="description" content="AuctionVault is the premier digital marketplace for buying and selling rare authenticated antiques, vintage watches, ancient coins, and fine art in live real-time bidding wars with smart escrow and anti-sniping protection.">
+  
+  <!-- Google Fonts: Cinzel & Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- =========================================================================
+       1. HERO DYNAMIC AUCTION TICKER
+       ========================================================================= -->
+  <div class="auction-ticker-wrap" id="main-ticker-bar">
+    <div class="ticker-container">
+      <div class="ticker-badge">
+        <span class="live-dot"></span>
+        <span>Live Floor Ticker</span>
+      </div>
+      
+      <div class="ticker-track" id="ticker-live-items">
+        <!-- Injected via JavaScript from active catalog -->
+      </div>
+
+      <div class="ticker-audio-control">
+        <button class="audio-toggle-btn active" id="audio-toggle-btn" title="Toggle Sound FX (Gavel strikes, bid chimes, alerts)">
+          <i class="fa-solid fa-volume-high" id="audio-icon"></i>
+          <span id="audio-label">FX On</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MAIN NAVIGATION BAR
+       ========================================================================= -->
+  <header class="main-navbar" id="main-nav">
+    <div class="nav-container">
+      <div class="brand-logo" onclick="app.switchView('homepage')">
+        <div class="brand-crest">
+          <i class="fa-solid fa-gavel"></i>
+        </div>
+        <div class="brand-text">
+          <h1 class="gold-text">AUCTIONVAULT</h1>
+          <span>Peer-to-Peer Relic Exchange</span>
+        </div>
+      </div>
+
+      <ul class="nav-links" id="nav-menu">
+        <li>
+          <button class="nav-btn active" id="nav-btn-home" onclick="app.switchView('homepage')">
+            <i class="fa-solid fa-compass"></i> Discover
+          </button>
+        </li>
+        <li>
+          <button class="nav-btn" id="nav-btn-arena" onclick="app.switchView('arena')">
+            <i class="fa-solid fa-fire-flame-curved"></i> The Bidding Arena
+            <span class="nav-badge" id="live-active-lots-count">6 Live</span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-btn" id="nav-btn-seller" onclick="app.switchView('seller')">
+            <i class="fa-solid fa-landmark"></i> Seller Dashboard
+          </button>
+        </li>
+        <li>
+          <button class="nav-btn" id="nav-btn-vault" onclick="app.switchView('vault')">
+            <i class="fa-solid fa-shield-halved"></i> Escrow & Certificate Vault
+          </button>
+        </li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="btn-list-treasure" onclick="app.openListingWizard()">
+          <i class="fa-solid fa-plus"></i>
+          <span>List a Treasure</span>
+        </button>
+
+        <button class="audio-toggle-btn" id="watchlist-header-btn" onclick="app.toggleWatchlistModal()" title="View Saved Watchlist">
+          <i class="fa-solid fa-heart text-danger"></i>
+          <span id="watchlist-header-count">0</span>
+        </button>
+
+        <div class="user-profile-badge" onclick="app.switchView('vault')" title="View Verified Collector Profile">
+          <div class="avatar-chip">AF</div>
+          <div class="user-badge-info">
+            <span class="user-badge-name">Lord Alistair</span>
+            <span class="user-badge-kyc"><i class="fa-solid fa-circle-check"></i> KYC Tier 3</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       VIEW 1: HOMEPAGE (Curated Discovery & Lot of the Day)
+       ========================================================================= -->
+  <main class="view-section active-view" id="view-homepage">
+    <!-- Hero Showcase Section -->
+    <section class="hero-wrapper">
+      <div class="hero-content">
+        <div class="hero-text-block">
+          <div class="hero-tagline">
+            <i class="fa-solid fa-certificate text-gold-color"></i>
+            <span>Verified Peer-to-Peer Live Antiquities</span>
+          </div>
+          <h2 class="hero-title">
+            Where Ancient Relics Meet <br><span class="gold-text">Real-Time Bidding Wars.</span>
+          </h2>
+          <p class="hero-description">
+            AuctionVault replaces sluggish classifieds with high-stakes, transparent digital auction rooms. Verified collectors compete in real-time with anti-sniping protection, cryptographic provenance passports, and smart escrow settlement.
+          </p>
+
+          <div class="hero-cta-group">
+            <button class="btn-primary-hero" onclick="app.switchView('arena')">
+              <i class="fa-solid fa-gavel"></i>
+              <span>Enter The Bidding Arena</span>
+            </button>
+            <button class="btn-secondary-hero" onclick="app.openListingWizard()">
+              <i class="fa-solid fa-feather-pointed"></i>
+              <span>Consign Your Antique</span>
+            </button>
+          </div>
+
+          <div class="hero-stats-strip">
+            <div class="stat-box">
+              <h4>$24.8M</h4>
+              <p>Escrow Settled</p>
+            </div>
+            <div class="stat-box">
+              <h4>1,850+</h4>
+              <p>Verified Relics</p>
+            </div>
+            <div class="stat-box">
+              <h4>100%</h4>
+              <p>Physical Inspection</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured "Lot of the Day" Spotlight Card -->
+        <div class="hero-spotlight-block">
+          <div class="lot-of-the-day-card" id="lot-of-the-day-container">
+            <!-- Dynamically populated from INITIAL_CATALOG -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trust & Authentication Badge Bar -->
+    <section class="trust-bar-section">
+      <div class="trust-bar-inner">
+        <div class="trust-pill">
+          <div class="trust-icon-box">
+            <i class="fa-solid fa-lock"></i>
+          </div>
+          <div class="trust-pill-text">
+            <h5>Smart Escrow Protection</h5>
+            <p>Funds held in insured escrow until buyer completes physical 48-hr inspection.</p>
+          </div>
+        </div>
+
+        <div class="trust-pill">
+          <div class="trust-icon-box">
+            <i class="fa-solid fa-microscope"></i>
+          </div>
+          <div class="trust-pill-text">
+            <h5>Expert Verification</h5>
+            <p>Double-blind authentication by senior numismatists, horologists, and art historians.</p>
+          </div>
+        </div>
+
+        <div class="trust-pill">
+          <div class="trust-icon-box">
+            <i class="fa-solid fa-truck-shield"></i>
+          </div>
+          <div class="trust-pill-text">
+            <h5>White-Glove Armored Transit</h5>
+            <p>Full-value climate-controlled courier with Lloyd's of London insurance backing.</p>
+          </div>
+        </div>
+
+        <div class="trust-pill">
+          <div class="trust-icon-box">
+            <i class="fa-solid fa-cube"></i>
+          </div>
+          <div class="trust-pill-text">
+            <h5>Digital Certificate Vault</h5>
+            <p>Tamper-evident SHA-256 cryptographic provenance passport transferred on win.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Curated Category Discovery & Catalog Grid -->
+    <section class="catalog-section" id="curated-catalog">
+      <div class="section-header-row">
+        <div class="section-title-wrap">
+          <h2>Curated Treasures & Masterpieces</h2>
+          <p>Discover museum-grade artifacts authenticated and ready for live floor competition.</p>
+        </div>
+
+        <!-- Category Nav Pills -->
+        <div class="category-nav-pills" id="category-filter-pills">
+          <!-- Dynamically generated from CATEGORIES -->
+        </div>
+      </div>
+
+      <!-- Relic Cards Grid -->
+      <div class="auction-grid" id="auction-cards-grid">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       VIEW 2: THE BIDDING ARENA (Live Dynamic Bidding & Lens Inspector)
+       ========================================================================= -->
+  <main class="view-section" id="view-arena">
+    <div class="arena-wrapper">
+      <!-- Breadcrumbs -->
+      <div class="arena-breadcrumbs">
+        <a onclick="app.switchView('homepage')">Home</a>
+        <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem;"></i>
+        <span>Live Arena</span>
+        <i class="fa-solid fa-chevron-right" style="font-size: 0.65rem;"></i>
+        <span id="arena-current-lot-breadcrumb" class="text-gold-color">Lot #088 - Imperial Ming Celadon Dragon Vase</span>
+      </div>
+
+      <!-- Anti-Sniping Protection Warning & Demo Banner -->
+      <div class="sniper-alert-banner" id="anti-sniping-banner">
+        <div class="sniper-alert-text">
+          <i class="fa-solid fa-shield-virus"></i>
+          <div>
+            <strong>Anti-Sniping Protection Active:</strong>
+            <span id="sniper-banner-desc">Any bid placed in the final 60 seconds automatically extends the auction clock by +120 seconds to guarantee fair floor bidding.</span>
+          </div>
+        </div>
+        <button class="sniper-trigger-demo-btn" onclick="app.triggerSniperDemo()" title="Simulate a last-second bid to see the timer extension in action">
+          <i class="fa-solid fa-bolt"></i> Test Anti-Sniping Trigger (+120s Demo)
+        </button>
+      </div>
+
+      <!-- Main Arena 2-Column Grid -->
+      <div class="arena-layout">
+        <!-- Left Column: Visual Inspector & Provenance Deep Dive -->
+        <div class="arena-left-col">
+          <div class="arena-visual-card">
+            <!-- High-Zoom / Lens Magnifier Container -->
+            <div class="zoom-container" id="arena-zoom-container">
+              <span class="zoom-instruction">
+                <i class="fa-solid fa-magnifying-glass-plus"></i> Hover cursor to inspect micro-details (2.5x Optical Loupe)
+              </span>
+              <img id="arena-main-image" src="assets/vase.jpg" alt="Antique Artifact" class="zoom-image">
+              <div class="zoom-lens-window" id="arena-zoom-lens"></div>
+            </div>
+
+            <!-- Lot Switcher Strip -->
+            <div class="arena-lot-selector-strip" id="arena-lot-thumbs">
+              <!-- Rendered via JavaScript for all 6 lots -->
+            </div>
+          </div>
+
+          <!-- Interactive Tabs: Provenance, Expert Curatorial Report, Specifications -->
+          <div class="arena-tabs-card">
+            <div class="tabs-nav-bar">
+              <button class="tab-btn active" onclick="app.switchArenaTab('provenance')">
+                <i class="fa-solid fa-scroll"></i> Provenance Lineage
+              </button>
+              <button class="tab-btn" onclick="app.switchArenaTab('expert')">
+                <i class="fa-solid fa-certificate"></i> Expert Verification
+              </button>
+              <button class="tab-btn" onclick="app.switchArenaTab('specs')">
+                <i class="fa-solid fa-sliders"></i> Technical Specs
+              </button>
+            </div>
+
+            <div class="tab-pane active" id="tab-pane-provenance">
+              <div class="provenance-timeline" id="arena-provenance-timeline">
+                <!-- Injected via JavaScript -->
+              </div>
+            </div>
+
+            <div class="tab-pane" id="tab-pane-expert">
+              <div id="arena-expert-content">
+                <!-- Injected via JavaScript -->
+              </div>
+              <div class="cert-guarantee-box">
+                <div class="cert-meta">
+                  <h6><i class="fa-solid fa-award text-gold-color"></i> Cryptographic Certificate Issued</h6>
+                  <p id="arena-cert-number-preview">Serial: AV-AUTH-2026-MING-088</p>
+                </div>
+                <button class="btn-view-coa" onclick="app.openCoaModal()">
+                  <i class="fa-solid fa-file-shield"></i> View Full Certificate
+                </button>
+              </div>
+            </div>
+
+            <div class="tab-pane" id="tab-pane-specs">
+              <div id="arena-specs-content">
+                <!-- Injected via JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Live Dynamic Bidding Engine -->
+        <div class="arena-right-col">
+          <div class="arena-bidding-card" id="arena-bidding-engine">
+            <div class="arena-live-header">
+              <span class="lot-id-badge" id="arena-lot-badge">LOT #088</span>
+              <div class="viewers-badge">
+                <span class="live-dot"></span>
+                <span id="arena-viewers-count">238 Viewing Now</span>
+              </div>
+            </div>
+
+            <div class="arena-title-info">
+              <h2 id="arena-lot-title">Imperial Ming Dynasty Celadon Dragon Vase</h2>
+              <div class="arena-seller-chip" id="arena-seller-chip">
+                <!-- Consignor information -->
+              </div>
+            </div>
+
+            <!-- Master Countdown Clock Box -->
+            <div class="arena-timer-box" id="arena-timer-wrapper">
+              <div class="timer-title-group">
+                <span class="lbl">Auction Closes In</span>
+                <span class="sub" id="arena-timer-subtext">Live Floor Active</span>
+              </div>
+              <div class="arena-big-clock" id="arena-big-timer">
+                00:01:25
+              </div>
+            </div>
+
+            <!-- Current Highest Bid Module -->
+            <div class="arena-price-module">
+              <div>
+                <span class="current-bid-lbl">Current Highest Bid</span>
+                <div class="current-bid-num" id="arena-current-bid-display">$168,000</div>
+              </div>
+              <div class="bid-status-tags">
+                <span class="reserve-badge met" id="arena-reserve-badge">
+                  <i class="fa-solid fa-check"></i> Reserve Met
+                </span>
+                <div class="min-next-bid-tag" id="arena-min-next-tag">
+                  Min Next Bid: $170,000
+                </div>
+              </div>
+            </div>
+
+            <!-- Interactive Bidding Action Controls -->
+            <div class="bidding-action-panel">
+              <!-- Quick Bid Increments -->
+              <div class="quick-bid-grid" id="arena-quick-bid-buttons">
+                <!-- Dynamically populated with +$1k, +$2.5k, +$5k, +$10k -->
+              </div>
+
+              <!-- Custom Bid Input & Gavel Submit -->
+              <div class="custom-bid-group">
+                <div class="input-bid-wrap">
+                  <span class="bid-currency-symbol">$</span>
+                  <input type="number" id="arena-custom-bid-input" class="input-custom-bid" placeholder="Enter bid amount...">
+                </div>
+                <button class="btn-place-bid-primary" id="btn-submit-arena-bid" onclick="app.handlePlaceBid()">
+                  <i class="fa-solid fa-gavel"></i> Place Bid
+                </button>
+              </div>
+
+              <!-- Proxy Bidding (Auto-Bidder / Max Bid) -->
+              <div class="proxy-bidding-card">
+                <div class="proxy-header">
+                  <h6><i class="fa-solid fa-robot"></i> Proxy Auto-Bidder</h6>
+                  <span id="proxy-status-pill" class="badge-mini text-muted">Inactive</span>
+                </div>
+                <p class="proxy-desc">
+                  Set your confidential maximum budget. The system will automatically place the minimum required bid on your behalf whenever competing bids are entered, up to your cap.
+                </p>
+                <div class="proxy-input-row">
+                  <input type="number" id="arena-proxy-max-input" class="input-proxy-max" placeholder="Max Proxy Ceiling ($)...">
+                  <button class="btn-set-proxy" onclick="app.setProxyBid()">Set Cap</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live Floor Simulation Bar -->
+            <div class="simulation-bar">
+              <div class="sim-toggle-wrap">
+                <div class="sim-switch on" id="sim-floor-switch" onclick="app.toggleFloorSimulation()">
+                  <div class="sim-switch-knob"></div>
+                </div>
+                <span>Simulate Competing Floor Bidders</span>
+              </div>
+              <span class="text-muted" style="font-size: 0.72rem;">Bids every 15-25s</span>
+            </div>
+
+            <!-- Live Bid Stream History -->
+            <div class="live-bid-history-module">
+              <div class="bid-history-header">
+                <span><i class="fa-solid fa-wave-square text-gold-color"></i> Live Bidding Stream</span>
+                <span id="arena-bid-history-count" class="mono text-gold-color">42 Bids</span>
+              </div>
+              <div class="bid-history-list" id="arena-bid-history-entries">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       VIEW 3: SELLER DASHBOARD & "LIST A TREASURE" WIZARD
+       ========================================================================= -->
+  <main class="view-section" id="view-seller">
+    <div class="seller-view-wrapper">
+      <div class="seller-tabs-header">
+        <div>
+          <h2>Consignor & Seller Studio</h2>
+          <p class="text-muted">Submit rare heirlooms for expert curation and monitor your live floor lots in real time.</p>
+        </div>
+
+        <div class="seller-switch-btns">
+          <button class="seller-subtab-btn active" id="seller-btn-wizard" onclick="app.switchSellerSubTab('wizard')">
+            <i class="fa-solid fa-plus-circle"></i> List a Treasure
+          </button>
+          <button class="seller-subtab-btn" id="seller-btn-tracker" onclick="app.switchSellerSubTab('tracker')">
+            <i class="fa-solid fa-chart-line"></i> Real-Time Bid Tracker
+          </button>
+        </div>
+      </div>
+
+      <!-- SUBTAB A: "LIST A TREASURE" MULTI-STEP WIZARD -->
+      <div id="seller-subtab-wizard" class="wizard-card">
+        <!-- Progress Stepper -->
+        <div class="wizard-stepper">
+          <div class="step-node active" id="step-node-1">
+            <div class="step-circle">1</div>
+            <span class="step-label">Identification</span>
+          </div>
+          <div class="step-node" id="step-node-2">
+            <div class="step-circle">2</div>
+            <span class="step-label">Media & Provenance</span>
+          </div>
+          <div class="step-node" id="step-node-3">
+            <div class="step-circle">3</div>
+            <span class="step-label">Auction Engine</span>
+          </div>
+          <div class="step-node" id="step-node-4">
+            <div class="step-circle">4</div>
+            <span class="step-label">Authentication</span>
+          </div>
+        </div>
+
+        <form id="treasure-submission-form" onsubmit="event.preventDefault();">
+          <!-- Step 1: Identification -->
+          <div class="wizard-form-step active" id="wizard-step-1">
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label">Treasure Title * <span class="form-label-hint">Official catalog title</span></label>
+                <input type="text" id="wiz-title" class="form-input" placeholder="e.g. 18th Century Venetian Carved Walnut Settee" value="Hellenistic Bronze Bust of Apollo">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Category *</label>
+                <select id="wiz-category" class="form-select">
+                  <option value="Ancient Artifacts">Ancient Artifacts</option>
+                  <option value="Vintage Watches">Vintage Watches</option>
+                  <option value="Rare Coins & Medals">Rare Coins & Medals</option>
+                  <option value="Fine Art & Masters">Fine Art & Masters</option>
+                  <option value="Curios & Antiques">Curios & Antiques</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="form-label">Historical Era / Dynasty</label>
+                <input type="text" id="wiz-era" class="form-input" placeholder="e.g. 2nd Century BC" value="circa 150 BC (Hellenistic Greece)">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Condition Grade</label>
+                <select id="wiz-condition" class="form-select">
+                  <option value="Museum Grade (Flawless untouched patina)">Museum Grade (Flawless untouched patina)</option>
+                  <option value="Choice Very Fine (Minimal wear)">Choice Very Fine (Minimal wear)</option>
+                  <option value="Historical Stable Craquelure">Historical Stable Craquelure</option>
+                  <option value="Professionally Conserved">Professionally Conserved</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Origin Culture / Region</label>
+                <input type="text" id="wiz-origin" class="form-input" placeholder="e.g. Attica, Greece" value="Peloponnese, Greece">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Historical & Curatorial Description</label>
+              <textarea id="wiz-description" class="form-textarea" placeholder="Detail the craftsmanship, metallurgical characteristics, known iconography, and historical significance...">Rare cast hollow bronze head depicting the god Apollo with finely chiseled wavy hair bound with a diadem. Surface bears an exquisite natural malachite-green verdigris patina from ancient sub-marine immersion.</textarea>
+            </div>
+          </div>
+
+          <!-- Step 2: Media & Provenance -->
+          <div class="wizard-form-step" id="wizard-step-2">
+            <div class="form-group">
+              <label class="form-label">High-Resolution Photography & 360 Video *</label>
+              <div class="media-dropzone" onclick="app.mockAddImage()">
+                <div class="dropzone-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                <div class="dropzone-prompt">
+                  <h5>Click or Drag High-Res Master Artifact Photographs</h5>
+                  <p>Supports TIFF, RAW, PNG, JPG up to 100MB per file. High-zoom inspection ready.</p>
+                </div>
+              </div>
+              <div class="uploaded-preview-grid" id="wiz-media-previews">
+                <div class="media-thumb-preview"><img src="assets/coin.jpg" alt="Preview 1"></div>
+                <div class="media-thumb-preview"><img src="assets/katana.jpg" alt="Preview 2"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                <span>Provenance Chronology Lineage *</span>
+                <span class="form-label-hint">Prior auction houses, noble estates, exhibitions</span>
+              </label>
+              <textarea id="wiz-provenance" class="form-textarea" placeholder="Enter historical owners line by line...">1892: Recovered off Aegean seabed by Captain Nikos Karavias
+1924: Acquired by the Countess of Pembroke Collection, Wilton House
+1986: Cataloged at Christie's London Antiquities Sale (Lot #49)
+2025: Authenticated via XRF spectrometry confirming ancient Hellenic copper-tin alloy</textarea>
+            </div>
+          </div>
+
+          <!-- Step 3: Auction Configuration Engine -->
+          <div class="wizard-form-step" id="wizard-step-3">
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="form-label">Auction Duration Type</label>
+                <select id="wiz-duration" class="form-select">
+                  <option value="180">🧪 Demo Turbo Mode (3 Minutes - for live testing)</option>
+                  <option value="259200">3 Days Timed Auction</option>
+                  <option value="432000" selected>5 Days Timed Auction</option>
+                  <option value="604800">7 Days Timed Auction</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Starting Bid ($ USD) *</label>
+                <input type="number" id="wiz-start-bid" class="form-input" value="45000">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Reserve Price ($ USD) * <span class="form-label-hint">Secret minimum</span></label>
+                <input type="number" id="wiz-reserve-bid" class="form-input" value="85000">
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label">Buy-It-Now Strike Price ($ Optional)</label>
+                <input type="number" id="wiz-buy-now" class="form-input" placeholder="e.g. 150000" value="140000">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Minimum Bid Increment ($ USD)</label>
+                <input type="number" id="wiz-increment" class="form-input" value="2500">
+              </div>
+            </div>
+
+            <div class="cert-guarantee-box" style="margin-top: 1rem;">
+              <div class="cert-meta">
+                <h6><i class="fa-solid fa-shield-virus text-gold-color"></i> Anti-Sniping Protection Engine</h6>
+                <p>Ensures fair competition by automatically extending the auction by 2 minutes if bids arrive in the final 60 seconds.</p>
+              </div>
+              <div>
+                <span class="badge-mini" style="background: rgba(16, 185, 129, 0.2); color: var(--accent-live); padding: 0.4rem 0.8rem; border-radius: var(--radius-full); font-weight: 700;">
+                  <i class="fa-solid fa-check"></i> Enabled
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Authentication & Review -->
+          <div class="wizard-form-step" id="wizard-step-4">
+            <div class="cert-guarantee-box" style="margin-bottom: 1.5rem; background: rgba(56, 189, 248, 0.08); border-color: rgba(56, 189, 248, 0.3);">
+              <div class="cert-meta">
+                <h6 style="color: var(--accent-blue);"><i class="fa-solid fa-stamp"></i> Mandatory Expert Double-Blind Review</h6>
+                <p>Upon submission, your relic is assigned an accredited senior conservator. A cryptographic Digital Certificate of Authenticity (COA) is minted on-chain prior to the first public bid.</p>
+              </div>
+            </div>
+
+            <div class="lot-bid-snapshot" style="background: rgba(0,0,0,0.5);">
+              <div>
+                <span class="bid-lbl">Listing Summary</span>
+                <h4 id="wiz-summary-title" style="margin-top: 0.3rem;">Hellenistic Bronze Bust of Apollo</h4>
+                <p id="wiz-summary-sub" class="text-muted" style="font-size: 0.82rem;">Ancient Artifacts • 5 Days Timed Auction</p>
+              </div>
+              <div style="text-align: right;">
+                <span class="bid-lbl">Starting / Reserve</span>
+                <div class="bid-val" id="wiz-summary-prices">$45,000 / $85,000</div>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 0.8rem; margin-top: 1.5rem;">
+              <input type="checkbox" id="wiz-escrow-agree" checked style="accent-color: var(--gold-primary); width: 18px; height: 18px;">
+              <label for="wiz-escrow-agree" style="font-size: 0.85rem; color: var(--text-muted);">
+                I agree to platform Escrow terms: all sale proceeds remain held securely until the buyer's 48-hour inspection period concludes.
+              </label>
+            </div>
+          </div>
+
+          <!-- Stepper Buttons -->
+          <div class="wizard-footer-actions">
+            <button type="button" class="btn-wizard-prev" id="wiz-btn-prev" onclick="app.prevWizardStep()" style="visibility: hidden;">
+              <i class="fa-solid fa-arrow-left"></i> Previous
+            </button>
+            <button type="button" class="btn-wizard-next" id="wiz-btn-next" onclick="app.nextWizardStep()">
+              <span>Next Step</span> <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <button type="button" class="btn-wizard-submit" id="wiz-btn-submit" onclick="app.submitNewTreasure()" style="display: none;">
+              <i class="fa-solid fa-gavel"></i> <span>Launch Live Auction</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- SUBTAB B: SELLER REAL-TIME BID TRACKER PANEL -->
+      <div id="seller-subtab-tracker" class="seller-tracker-grid" style="display: none;">
+        <!-- Injected via JavaScript from active consignments -->
+      </div>
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       VIEW 4: TRANSACTIONS, ESCROW GATEWAY & DIGITAL CERTIFICATE VAULT
+       ========================================================================= -->
+  <main class="view-section" id="view-vault">
+    <div class="account-view-wrapper">
+      <!-- Profile & KYC Verification Banner -->
+      <div class="profile-overview-card">
+        <div class="profile-left">
+          <div class="profile-avatar-large">AF</div>
+          <div class="profile-titles">
+            <h2>Lord Alistair Finch</h2>
+            <div style="display: flex; align-items: center; gap: 0.8rem; margin-top: 0.4rem; flex-wrap: wrap;">
+              <span class="kyc-verified-pill">
+                <i class="fa-solid fa-circle-check"></i> KYC Tier 3 Verified Antiquarian
+              </span>
+              <span style="font-size: 0.82rem; color: var(--text-muted);">
+                <i class="fa-solid fa-building-columns"></i> Bank-Grade Escrow Custody Linked
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-right-stats">
+          <div class="profile-stat-box">
+            <div class="num">99.8%</div>
+            <div class="lbl">Trust Score</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="num">$1.84M</div>
+            <div class="lbl">Volume Escrowed</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="num">24</div>
+            <div class="lbl">Relics Owned</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secure Escrow Payment Gateway Visualizer -->
+      <div class="escrow-flow-card">
+        <div class="section-title-wrap" style="margin-bottom: 1.5rem;">
+          <h3><i class="fa-solid fa-shield-halved text-gold-color"></i> Active Escrow Custody Hub</h3>
+          <p>AuctionVault operates an insured multi-signature escrow protocol. Buyer funds are held in custodial trusts until delivery and full 48-hour physical inspection.</p>
+        </div>
+
+        <div class="escrow-steps-horizontal">
+          <div class="escrow-step-item completed">
+            <div class="step-status-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <h5>1. Auction Won & Locked</h5>
+            <p>Lot #088 finalized at $168,000 hammer price. Escrow contract locked automatically.</p>
+          </div>
+
+          <div class="escrow-step-item completed">
+            <div class="step-status-icon"><i class="fa-solid fa-vault"></i></div>
+            <h5>2. Escrow Funded</h5>
+            <p>$184,800 (Hammer + 10% Buyer Premium) secured in Lloyd's-backed custodial vault.</p>
+          </div>
+
+          <div class="escrow-step-item active">
+            <div class="step-status-icon"><i class="fa-solid fa-truck-ramp-box"></i></div>
+            <h5>3. Armored Transit & Inspection</h5>
+            <p>Delivered via Brink's White-Glove Courier. <strong>48-Hour Inspection Window: 36h 14m remaining</strong>.</p>
+          </div>
+
+          <div class="escrow-step-item">
+            <div class="step-status-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+            <h5>4. Release & Title Deed</h5>
+            <p>Buyer inspection approval triggers instant settlement to consignor & NFT deed transfer.</p>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.4); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <strong style="color: #fff; font-size: 0.95rem;">Escrow Reference: #AV-ESC-2026-9941</strong>
+            <p style="color: var(--text-muted); font-size: 0.8rem;">Item: Imperial Ming Dynasty Celadon Dragon Vase • Consignor: @StauffenAntiquities</p>
+          </div>
+          <div style="display: flex; gap: 0.8rem;">
+            <button class="btn-inspect-quick" onclick="app.showToast('Escrow Dispute Form dispatched to senior arbitration council.', 'info')">
+              <i class="fa-solid fa-triangle-exclamation"></i> Request Re-Inspection
+            </button>
+            <button class="btn-enter-arena" onclick="app.simulateEscrowRelease()">
+              <i class="fa-solid fa-check-double"></i> Approve & Release Funds to Seller
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Digital Certificate Vault -->
+      <div class="section-title-wrap" style="margin-bottom: 1.8rem;">
+        <h3><i class="fa-solid fa-award text-gold-color"></i> Digital Certificate Vault (COA Passports)</h3>
+        <p>Every relic transacted on AuctionVault carries an immutable, cryptographically verifiable provenance record.</p>
+      </div>
+
+      <div class="certificate-vault-grid" id="certificate-vault-items">
+        <!-- Rendered via JavaScript -->
+      </div>
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       MODAL 1: HIGH-END PARCHMENT CERTIFICATE OF AUTHENTICITY (COA)
+       ========================================================================= -->
+  <div class="modal-overlay" id="coa-modal" onclick="if(event.target === this) app.closeCoaModal()">
+    <div class="modal-dialog">
+      <button class="modal-close-btn" onclick="app.closeCoaModal()" title="Close Certificate">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="parchment-cert" id="printable-parchment">
+        <div style="text-align: center; margin-bottom: 1rem;">
+          <i class="fa-solid fa-shield-cat" style="font-size: 2.8rem; color: #b8860b;"></i>
+        </div>
+        <h2>CERTIFICATE OF AUTHENTICITY</h2>
+        <div class="cert-subtitle">INTERNATIONAL ASSOCIATION OF ACCREDITED ANTIQUARIANS &bull; AUCTIONVAULT DIGITAL REGISTRY</div>
+        
+        <div class="cert-divider"></div>
+
+        <div class="cert-item-title" id="coa-modal-lot-title">Imperial Ming Dynasty Celadon Dragon Vase</div>
+        <p style="text-align: center; font-family: var(--font-mono); font-size: 0.82rem; color: #7a6348; margin-bottom: 1.5rem;" id="coa-modal-serial">
+          CERTIFICATE NO: AV-AUTH-2026-MING-088 &bull; LOT #088
+        </p>
+
+        <p class="cert-body-p" id="coa-modal-body-text">
+          This document certifies that the aforementioned artifact has undergone comprehensive physical examination, optical microscopy, XRF pigment spectroscopy, and provenance lineage cross-referencing. The artifact is unequivocally guaranteed authentic and of the historical period, culture, and attribution stated herein.
+        </p>
+
+        <div style="background: rgba(0,0,0,0.04); border: 1px solid #d4af37; padding: 1rem; border-radius: 6px; font-family: var(--font-mono); font-size: 0.78rem; color: #4a4036; word-break: break-all; margin-bottom: 1.5rem;">
+          <strong>Cryptographic Provenance Hash (SHA-256):</strong><br>
+          <span id="coa-modal-hash">0x8f9c2d1b7e4a509f61b238a9e04cd612fb8e91aa78994a20b9231f8b1c4e9</span>
+        </div>
+
+        <div class="cert-signatures">
+          <div class="sig-box">
+            <div class="sig-line">Dr. Huan Lin, FSA</div>
+            <div class="sig-title">Senior Conservator of Imperial Antiquities</div>
+          </div>
+          <div class="sig-box">
+            <div class="sig-line">Lord Alistair Finch</div>
+            <div class="sig-title">Chief Registrar, AuctionVault Escrow</div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; margin-top: 2.5rem;">
+          <button class="btn-enter-arena" onclick="window.print()" style="padding: 0.75rem 2rem;">
+            <i class="fa-solid fa-print"></i> Print Official Parchment Certificate
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 2: SAVED WATCHLIST DRAWER
+       ========================================================================= -->
+  <div class="modal-overlay" id="watchlist-modal" onclick="if(event.target === this) app.toggleWatchlistModal()">
+    <div class="modal-dialog" style="max-width: 580px;">
+      <button class="modal-close-btn" onclick="app.toggleWatchlistModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div style="padding: 2rem;">
+        <h3 style="margin-bottom: 0.4rem; font-size: 1.5rem;">
+          <i class="fa-solid fa-heart text-danger"></i> Saved Relics Watchlist
+        </h3>
+        <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+          Real-time alerts notify you whenever new bids are placed or when an auction is in final countdown.
+        </p>
+
+        <div id="watchlist-items-list" style="display: flex; flex-direction: column; gap: 1rem;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       TOAST NOTIFICATIONS CONTAINER
+       ========================================================================= -->
+  <div class="toast-container" id="toast-stack"></div>
+
+  <!-- =========================================================================
+       FOOTER
+       ========================================================================= -->
+  <footer class="main-footer">
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div class="brand-logo" style="margin-bottom: 1rem;">
+          <div class="brand-crest">
+            <i class="fa-solid fa-gavel"></i>
+          </div>
+          <div class="brand-text">
+            <h3 class="gold-text" style="font-size: 1.25rem;">AUCTIONVAULT</h3>
+            <span style="font-size: 0.65rem;">Peer-to-Peer Relic Exchange</span>
+          </div>
+        </div>
+        <p style="font-size: 0.85rem; line-height: 1.6; color: var(--text-muted); margin-bottom: 1.2rem;">
+          The next-generation digital auction house connecting authenticated consignors with verified private collectors worldwide. Built with anti-sniping protection, cryptographic provenance passports, and smart escrow settlement.
+        </p>
+        <div style="display: flex; gap: 1rem; color: var(--gold-light); font-size: 1.1rem;">
+          <i class="fa-brands fa-x-twitter" style="cursor: pointer;"></i>
+          <i class="fa-brands fa-instagram" style="cursor: pointer;"></i>
+          <i class="fa-brands fa-discord" style="cursor: pointer;"></i>
+          <i class="fa-solid fa-shield-halved" style="cursor: pointer;"></i>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>The Live Arena</h4>
+        <ul>
+          <li><a onclick="app.switchView('arena')">Live Floor Bidding</a></li>
+          <li><a onclick="app.filterCatalog('artifacts')">Ancient Artifacts</a></li>
+          <li><a onclick="app.filterCatalog('watches')">Vintage Watches</a></li>
+          <li><a onclick="app.filterCatalog('coins')">Rare Numismatics</a></li>
+          <li><a onclick="app.filterCatalog('art')">Old Masters Art</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Consign & Protect</h4>
+        <ul>
+          <li><a onclick="app.openListingWizard()">List a Treasure</a></li>
+          <li><a onclick="app.switchView('seller')">Consignor Real-Time Tracker</a></li>
+          <li><a onclick="app.switchView('vault')">Smart Escrow Guidelines</a></li>
+          <li><a onclick="app.switchView('vault')">Digital Certificate Vault</a></li>
+          <li><a onclick="app.openCoaModal()">Authentication Standards</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Verification & Trust</h4>
+        <ul>
+          <li><a href="#">Anti-Sniping Protocol (2m Soft Close)</a></li>
+          <li><a href="#">48-Hour Inspection Guarantee</a></li>
+          <li><a href="#">Lloyd's Armored Transit Insurance</a></li>
+          <li><a href="#">KYC & Syndicate Compliance</a></li>
+          <li><a href="#">Whitepaper & Smart Contract Audits</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div>&copy; 2026 AuctionVault Global Holdings Ltd. All rights reserved. Registered under International Fine Art & Antiquities Escrow Acts.</div>
+      <div style="display: flex; gap: 1.5rem;">
+        <a href="#" style="color: var(--text-muted); text-decoration: none;">Privacy Policy</a>
+        <a href="#" style="color: var(--text-muted); text-decoration: none;">Escrow Terms</a>
+        <a href="#" style="color: var(--text-muted); text-decoration: none;">Anti-Fraud Rules</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
